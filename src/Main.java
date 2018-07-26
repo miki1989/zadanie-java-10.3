@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -25,17 +26,34 @@ public class Main {
         bfw.write("samochód; Opel; 3000.0");
         bfw.newLine();
         bfw.close();
-
-        for (int i = 0; i < products.length; i++) {
-            Scanner scanner = new Scanner(file);
-            while(scanner.hasNextLine()){
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNextLine()) {
+            for (int i = 0; i < products.length; i++) {
                 String newLine = scanner.nextLine();
-                products[i] = new Product(newLine, newLine, newLine);
-                //System.out.println(products[i]);
+                String []divide = newLine.split(";");
+                System.out.println(Arrays.toString(divide));
+                products[i] = new Product(divide[0], divide[1],Double.valueOf(divide[2]));
             }
-
         }
-        System.out.println(products[0]);
+        //obliczanie sumy cen produktów
+        double sum = 0;
+        for (int i = 0; i < products.length; i++) {
+            sum += products[i].getPrice();
+        }
+        System.out.println("Suma cen produktów to");
+        System.out.println(sum);
 
+        //zwracanie najdroższego produktu
+        String maxValProd= " ";
+        double maxValue = products[0].getPrice();
+        for (int i = 0; i < products.length ; i++) {
+            if(products[i].getPrice() > maxValue){
+                maxValue = products[i].getPrice();
+                maxValProd = products[i].getProductName();
+            }
+        }
+        System.out.println("Cena najdroższego produktu to ");
+        System.out.print(maxValue);
+        System.out.println(" a jego nazwa to " + maxValProd);
     }
 }
